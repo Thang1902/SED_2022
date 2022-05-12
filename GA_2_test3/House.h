@@ -41,4 +41,5 @@ public:
     void setAvailability(Date st, Date e);
 
     void viewInfoHouse();
+    void viewInfoHouseGuess();
 };

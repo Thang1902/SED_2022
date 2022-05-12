@@ -29,6 +29,14 @@ void House::viewInfoHouse(){
     cout << "Minimum rating : " << min_rate << endl;
 }
 
+void House::viewInfoHouseGuess(){
+    cout << "Location: " << location << endl;
+    cout << "Description: " << description << endl;    
+    cout << "Owner: " << owner->getFullName() << endl;    
+    cout << "Consuming point per day: " << consuming_point << endl;
+    cout << "Minimum rating : " << min_rate << endl;
+}
+
 Member* House::getOwner(){
     return owner;
 }

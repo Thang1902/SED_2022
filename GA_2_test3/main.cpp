@@ -1,10 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Member.cpp"
+#include "App.cpp"
 #include "House.cpp"
 #include "Date.cpp"
 #include "Review.cpp"
+#include "Program.cpp"
+
 
 using namespace std;
 
@@ -16,47 +18,8 @@ public:
     System(){};
 };  
 
-// function to list house
-House* getHouseToList(Member* owner_list, Date start, Date end, int consum_point, double minrate){
-    owner_list->getHouse()->setAvailability(start, end);    
-    owner_list->getHouse()->setConsumingPoint(consum_point);
-    owner_list->getHouse()->setMinRate(minrate);
-    return owner_list->getHouse();    
-}
-
-// function to list house without rating
-House* getHouseToListNoRating(Member* owner_list, Date start, Date end, int consum_point){
-    owner_list->getHouse()->setAvailability(start, end);    
-    owner_list->getHouse()->setConsumingPoint(consum_point);    
-    return owner_list->getHouse();    
-}
-
-// function to check if house is suitable
-bool isSuitableHouse(House* cmphouse, Date start, Date end, string city, double rate, int points){    
-    // cout << "start date of house:" <<cmphouse->start_avai.viewDate() << endl;
-    // cout << "end date of house:" <<cmphouse->end_avai.viewDate() << endl;
-    // cout << "start required: " << start.viewDate() << endl;
-    // cout << "end required: " << end.viewDate() << endl;
-    // cout << "city: " << cmphouse->location << endl;
-    // cout << "city required: " << city << endl;
-    // cout << "After comparison: "  << end.biggerDate(cmphouse->end_avai).viewDate();
-    if (cmphouse->start_avai > start){       
-        if (end > cmphouse->end_avai){                            
-            if (city == cmphouse->location){                
-                if (rate >= cmphouse->min_rate){
-                    if (points > (stoi(end.getDay()) - stoi(start.getDay())) * cmphouse->consuming_point){
-                        return true;
-                    }
-                }
-            }
-        }
-    }    
-    return false;    
-}
-
 int main(){
     System check;
-
 
     // string fname;
     // string phone;
@@ -128,24 +91,24 @@ int main(){
 
     // CREATE DATES
     
-    // Date def("010100");
-    // Date d1("120522");
-    // Date d2("170522");
-    // Date d3("220622");
-    // Date d4("280622");
-    // Date d5("130522");
+    Date def("010100");
+    Date d1("120522");
+    Date d2("170522");
+    Date d3("220622");
+    Date d4("280622");
+    Date d5("130522");
 
     // TEST VARIABLES
 
-    // int cpoint = 200;
-    // int cpoint2 = 300;
-    // double minr = 5.5;
-    // double minr2 = 6.5;
+    int cpoint = 200;
+    int cpoint2 = 300;
+    double minr = 5.5;
+    double minr2 = 6.5;
 
-    // Date test1("100522");
-    // Date test2("180522");
+    Date test1("100522");
+    Date test2("180522");
 
-    // add house to list
+    // add house to list via members listing their house
 
     // check.house_list.push_back(getHouseToList(&m1, d1, d2, cpoint, minr));
     // check.house_list.push_back(getHouseToList(&m2, d3, d4, cpoint2, minr2));
@@ -190,8 +153,90 @@ int main(){
     // Review r1("nice", 6.7);
     // r1.showReview();
 
+    check.house_list.push_back(&h1);
+    check.house_list.push_back(&h2);
+
+    // program control
+    bool runProg = true;    
+    int Guess_mode = 1;
+    int Member_mode = 2;
+    int Admin_mode = 3;
+
+    // run the program
+    while (runProg)
+    {
+
+    welcomeScreen();
+    int mode; // what mode to use 
+    cin >> mode;
+    
+    if (mode == Guess_mode){ // AS GUESS
+        GuessScreen();
+        int guess_inp; // what to do as guess
+        cin >> guess_inp;
+        cin.sync(); // flush stream
+
+        switch (guess_inp)
+        {
+        case 1:{ // new member registration
+            cout << "Register to become member\n";
+            string fname;
+            string phone;
+            cout << "Enter name: ";
+            getline(cin, fname);            
+            cout << "Enter phone: ";    
+            getline(cin, phone);    
+            Member* new_mem = new Member(fname, phone);
+            check.member_list.push_back(new_mem);                         
+            BackorExit(runProg);           
+            break;
+        }
+        case 2:{ // list all houses
+            cout << "---------------------\n";
+            cout << "List of all houses:\n";
+            for (House* hou : check.house_list){
+                hou->viewInfoHouseGuess();
+                cout << "--------------\n";
+            }
+            BackorExit(runProg); 
+            break;
+        }
+        case 3:{ // go back to main menu
+            runProg = true;
+            break;
+        }
+        case 4:{ // exit
+            runProg = false;
+            break;
+        }
+        default:
+            break;
+        }        
+    }
+
+    if (mode == Member_mode){
+        cout << "Please enter your username and password: ";
+        cout << "Username: ";
+        cout << "Password: ";
+
+        MemberScreen(&m1);
+        int member_inp;
+        cin >> member_inp;
+        cin.sync(); // flush stream
+
+        switch (member_inp){
+            case 1:
+            m1.viewInfo();
+            runProg = 0;
+        }
+    }
+
+    if (mode == 3){
+        std::cout << "You are an admin";
+    }    
 
     
+    }
 }
     
     

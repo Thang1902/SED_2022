@@ -31,6 +31,8 @@ public:
 
     string getFullName();
 
+    
+
     void viewInfo();
     House* getHouse();
     void setHouse(House *house);
