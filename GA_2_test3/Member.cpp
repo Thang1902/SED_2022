@@ -44,3 +44,5 @@ void Member::rateOccupier(Member* occupier_rate, double rate){
     occupier_rate->occupier_rate_list.push_back(rate);
 }
 
+
+
