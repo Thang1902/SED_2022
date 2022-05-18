@@ -5,9 +5,6 @@
 
 using namespace std;
 
-void GuessApp();
-void MemberApp();
-void AdminApp();
 
 void welcomeScreen(){ // display main menu 
         cout << "EEET2482/COSC2082 ASSIGNMENT \n";
@@ -18,13 +15,6 @@ void welcomeScreen(){ // display main menu
         cout << "sXXXXXXX, Student Name \n";
         cout << "sXXXXXXX, Student Name \n\n";
         cout << "Use the app as 1. Guest   2. Member   3. Admin \n";
-        cout << "Enter your choice: 2 \n";
-        cout << "Enter username:............... \n";
-        cout << "........................................................... \n\n";
-        cout << "This is your menu: \n";
-        cout << "0.  Exit \n";
-        cout << "1.  View Information \n";
-        cout << "............................................................ \n\n";
         cout << "Enter your choice: ";    
 }
 
@@ -53,13 +43,26 @@ void MemberScreen(Member* mem){ // display screen for member
     cout << "Enter your choice: ";
 }
 
-void BackorExit(bool run){ // function for going back to main menu or exit prog
+void BackorExit(bool& run_prog, bool& run_subprog, int prog, int subprog, int exit){ // function for going back to main menu or exit prog
     int temp;   
-    cout << "PRESS 1 TO GO BACK TO MAIN MENU\n";
-    cout << "PRESS 2 TO EXIT\n";
+    cout << "PRESS "<< prog << " TO RETURN TO MAIN MENU\n";
+    cout << "PRESS "<< subprog << " TO GO BACK \n";
+    cout << "PRESS "<< exit << " TO EXIT \n";
     cin >> temp;
-    if (temp == 2){
-        run = false;
+    if (temp == run_prog){ //main menu
+        run_prog = true;
+        run_subprog = false;
+        
+    }
+
+    if (temp == subprog){ // sub menu
+        run_prog = true;
+        run_subprog = true;
+    }
+
+    if (temp == exit){
+        run_prog = false;
+        run_subprog = false;
     }
 }
     

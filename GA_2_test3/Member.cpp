@@ -3,6 +3,8 @@
 #include <string>
 #include "Member.h"
 
+
+
 using namespace std;
 
 Member::Member(){}
@@ -14,14 +16,34 @@ Member::Member(string fname, string phone){
     vector <double> occupier_rate_list;
 }
 
+void Member::setCredit(int credit){
+    this->credit = credit;
+}
+
+void Member::setRating(double rate){
+    this->occupier_rate = rate;
+}
+
 void Member::viewInfo(){
     cout << "Full name: " << fname << endl;
     cout << "Phone: " << phone << endl;
-    cout << "Credit point: " << credit << endl;
+    cout << "Credit point: " << credit << endl;    
+}
+
+int Member::getCpoint(){
+    return this->credit;
+}
+
+double Member::getRating(){
+    return this->occupier_rate;
 }
 
 string Member::getFullName(){
     return this->fname;
+}
+
+void Member::setFullName(string name){
+    this->fname = name;
 }
 
 void Member::setHouse(House *house){
@@ -44,5 +66,20 @@ void Member::rateOccupier(Member* occupier_rate, double rate){
     occupier_rate->occupier_rate_list.push_back(rate);
 }
 
+Request* Member::RequestAHouse(House* house, Member* owner, Date start, Date end){
+    Request* temp = new Request(house, owner, this, start, end);
+    return temp;
+}
+
+void Member::addRequestToList(Request* req){
+    request_list.push_back(req);
+}
+
+void Member::viewAllReq(){
+    cout << "Showing all requests to your house:\n";
+    for (Request* req : request_list){
+        req->RequestInfo();
+    }
+}
 
 
