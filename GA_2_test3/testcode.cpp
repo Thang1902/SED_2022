@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cstring>
 #include "App.cpp"
 #include "House.cpp"
 #include "Date.cpp"
@@ -60,43 +61,79 @@ int main(){
     m4.setHouse(&h4);
     h4.setOwner(&m4); 
 
-    Member m12;   
+    Member m12; 
+    House h12, h22, h32;  
 
     vector <House> hlistin;    
     vector <House> hlistout;    
     
 
-    hlistin.push_back(h1);
-    hlistin.push_back(h2);
-    hlistin.push_back(h3);
-    hlistin.push_back(h4);
+    // hlistin.push_back(h1);
+    // hlistin.push_back(h2);
+    // hlistin.push_back(h3);
+    // hlistin.push_back(h4);
+
 
     ofstream f;
-    f.open("house.dat", ios::out | ios::binary);
-    size_t size = hlistin.size(); // size of vector
-    f.write(reinterpret_cast<char*>(&size), sizeof(size)); // write to file
-
-    for (size_t i = 0; i < hlistin.size(); i++){
-        size = sizeof(hlistin[i]);
-        f.write(reinterpret_cast<char*>(&size), sizeof size);
-
-        // const char *p = hlistin[i].data();
-        // f.write(p, listin[i].size());
-    }
-
-
+    f.open("house12.dat", ios::out | ios::binary);
     
-
-    // is.read(reinterpret_cast<char*> (&h12), sizeof(h12));
-    // is.read(reinterpret_cast<char*> (&h32), sizeof(h32));
-    // is.read(reinterpret_cast<char*> (&h22), sizeof(h22));
-    // h12.viewInfoHouse();
-    // h22.viewInfoHouse();
-    // h32.viewInfoHouse();
-    // House temp;
-    // House* temp_ptr = &temp;
+    f << 3;
+    f.write(reinterpret_cast<char*> (&h1),sizeof(House));
+    f.write(reinterpret_cast<char*> (&h2),sizeof(House));
+    f.write(reinterpret_cast<char*> (&h3),sizeof(House));
    
+    f.close();
+
+    // is.close();
+    // // size_t size = hlistin.size(); // size of vector
+      
+    // // f.write(reinterpret_cast<char*>(&size), sizeof(size)); // write to file
+
+    // // for (size_t i = 0; i < hlistin.size(); i++){
+    // //     size = sizeof(hlistin[i]);
+    // //     f.write(reinterpret_cast<char*>(&size), sizeof size);
+
+    // //     // const char *p = hlistin[i].data();
+    // //     // f.write(p, listin[i].size());
+    // // }    
+    // ifstream h;
+    // cout << h.tellg() << endl;
+    // h.open("house1.dat", ios::in | ios::binary);
+    // cout << h.tellg() << endl;
+    // h.read(reinterpret_cast<char*> (&h12), sizeof(h12));
+    // cout << h.tellg() << endl;
+    // h.read(reinterpret_cast<char*> (&h22), sizeof(h22));
+    // cout << h.tellg() << endl;
+    // h.read(reinterpret_cast<char*> (&h32), sizeof(h32));
+    // cout << h.tellg() << endl;
+    // h.close();
+     
+    int num_h;
+    ifstream ff;
+    ff.open("house12.dat", ios::in | ios::binary);
+
+    cout << "-------------------\n";
+
+    ff >> num_h;
+    cout << num_h << endl;
+
+    for (int i=0; i<num_h; i++){    
+        House temp;
+        ff.read(reinterpret_cast<char*> (&temp), sizeof(House));
+        temp.viewInfoHouse();
+    }
+    ff.close();
+    // }
+    // if (f.is_open()){
+    //     cout << "open";
+    // }
     
+
+    // for (House house : hlistout){
+    //     house.viewInfoHouse();
+    // }
+     
+
     
     
     

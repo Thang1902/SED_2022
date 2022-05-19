@@ -9,14 +9,17 @@ using namespace std;
 
 class Request{
 private:
-    Member* owner;
-    Member* requester;
-    House* requested_house;
+    int request_ID;
+    int owner_ID;
+    int requester_ID;
+    int house_ID;
     Date start;
     Date end;
 public:
     Request();
-    Request(House* requested_house, Member* owner, Member* requester, Date start, Date end); // for requester
+    Request(int house_ID, int owner_ID, int requester_ID, Date start, Date end); // for requester
 
-    void RequestInfo();
+    int getReqID();
+
+    void RequestInfo(Member requester);
 };

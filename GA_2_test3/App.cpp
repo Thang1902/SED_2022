@@ -28,8 +28,8 @@ void GuessScreen(){ // display screen for guess
     cout << "Enter your choice: ";
 }
 
-void MemberScreen(Member* mem){ // display screen for member
-    cout << "Welcome back, " << mem->getFullName() << endl;        
+void MemberScreen(Member mem){ // display screen for member
+    cout << "Welcome back, " << mem.getFullName() << endl;        
     cout << "1. View your information\n";
     cout << "2. List your house available (with minimumm rating required)\n";
     cout << "3. List your house available (no rating required)\n";

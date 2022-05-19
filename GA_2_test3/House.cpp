@@ -8,7 +8,7 @@
 #include "House.h"
 #include "Date.h"
 
-int GenerateID(){
+int GenerateHouseID(){
     int id;
     srand(time(0));
     id = (rand() % 100000);
@@ -27,8 +27,8 @@ House::House(string location, string description){
 };
 
 House::House(string location, string description, Date start, Date end, int consum_point, double minrate){
-    int id = GenerateID();
-    this->ID = id;
+    int id = GenerateHouseID();
+    this->house_ID = id;
     this->location = location;
     this->description = description;
     this->start_avai = start;
@@ -39,8 +39,8 @@ House::House(string location, string description, Date start, Date end, int cons
 }
 
 House::House(string location, string description, Date start, Date end, int consum_point){
-    int id = GenerateID();
-    this->ID = id;
+    int id = GenerateHouseID();
+    this->house_ID = id;
     this->location = location;
     this->description = description;
     this->start_avai = start;
@@ -51,49 +51,52 @@ House::House(string location, string description, Date start, Date end, int cons
 }
 
 void House::setID(int id){
-    this->ID = id;
+    this->house_ID = id;
 }
 
 void House::setID(){
-    int id = GenerateID();
-    this->ID = id;
+    int id = GenerateHouseID();
+    this->house_ID = id;
 }
 
 int House::getID(){
-    return this->ID;
+    return this->house_ID;
 }
 
-void House::setOwner(Member *add_owner){
-    this->owner = add_owner;    
+int House::getOwnerID(){
+    return this->owner_ID;
 }
 
-void House::viewInfoHouse(){
-    cout << "\nID: " << ID << endl;
+void House::setOwner(Member owner){
+    this->owner_ID = owner.getID();  
+}
+
+void House::viewInfoHouse(Member owner){
+    cout << "\nID: " << house_ID << endl;
     cout << "Location: " << location << endl;
     cout << "Description: " << description << endl;    
-    cout << "Owner: " << owner->getFullName() << endl;
+    cout << "Owner: " << owner.getFullName() << endl;
     cout << "Availability: " << start_avai.viewDate() << " to " << end_avai.viewDate() << endl;
     cout << "House rating score: " << house_rate << endl;
     cout << "Consuming point per day: " << consuming_point << endl;
     cout << "Minimum rating : " << min_rate << endl;
-    cout << "-----------------------\n";
-    cout << "fetching data\n";
+    cout << "-----------------------\n";    
 }
 
-void House::viewInfoHouseGuest(){
-    cout << "\nID: " << ID << endl;
+void House::viewInfoHouseGuest(Member owner){
+    cout << "\nID: " << house_ID << endl;
     cout << "Location: " << location << endl;
     cout << "Description: " << description << endl;    
-    cout << "Owner: " << owner->getFullName() << endl;
+    cout << "Owner: " << owner.getFullName() << endl;
     cout << "Availability: " << start_avai.viewDate() << " to " << end_avai.viewDate() << endl;    
     cout << "Consuming point per day: " << consuming_point << endl;
     cout << "Minimum rating : " << min_rate << endl;
     cout << "-----------------------\n";   
 }
 
-Member* House::getOwner(){
-    return owner;
-}
+// Member House::getOwner(){
+//     return owner;
+// }
 
 string House::getLocation(){
     return this->location;
@@ -136,7 +139,7 @@ void House::setDescription(string description){
     this->description = description;
 }
 
-bool House::isSuitableHouse(Member* mem, Date start, Date end, string city, double rate, int points){    
+bool House::isSuitableHouse(Member mem, Date start, Date end, string city, double rate, int points){    
     // cout << "start date of house:" <<cmphouse->start_avai.viewDate() << endl;
     // cout << "end date of house:" <<cmphouse->end_avai.viewDate() << endl;
     // cout << "start required: " << start.viewDate() << endl;
