@@ -1,9 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
-#include <string>
-
 using namespace std;
 
 class Date{
@@ -11,6 +7,7 @@ public:
     int day;
     int month;
     int year;
+    string DateAsString;
 
     Date();
     Date(string date_input);
@@ -19,14 +16,11 @@ public:
     string getDay();
     string getMonth();
     string getYear();
+    string getDateAsString();
 
-    string viewDate();
+    string viewDate();    
     Date biggerDate(Date cmp);
 
     bool operator == (Date cmp);
-    bool operator > (Date cmp);
-
-    
-
-
+    bool operator > (Date cmp);  
 };

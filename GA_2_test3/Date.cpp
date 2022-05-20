@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Date.h"
+
 
 Date::Date(){}
 
@@ -11,11 +11,11 @@ Date::Date(int day, int month, int year){
     this->year = year;
 }
 
-Date::Date(string date_input){
+Date::Date(string date_input){        
         string sday = date_input.substr(0, 2);
         string smonth = date_input.substr(2, 2);
         string syear = date_input.substr(4, 2);
-
+        DateAsString = date_input;
         this->day = stoi(sday);
         this->month = stoi(smonth);
         this->year = stoi(syear);
@@ -39,8 +39,15 @@ string Date::getYear(){
     return syear;
 }
 
-string Date::viewDate(){    
-    return this->getDay() + "/" + this->getMonth() + "/" + this->getYear();
+string Date::getDateAsString(){    
+    return DateAsString;
+}
+
+string Date::viewDate(){
+    if (year < 10){
+        return this->getDay() + "/" + this->getMonth() + "/200" + this->getYear();
+    }    
+    return this->getDay() + "/" + this->getMonth() + "/20" + this->getYear();
 } 
 
 Date Date::biggerDate(Date cmp){    
