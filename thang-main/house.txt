@@ -1,0 +1,36 @@
+1
+1
+HCM
+A villa in HCM
+50
+0.9
+10
+1205222
+2005222
+3112
+1
+Cali
+a house in calo
+100
+10
+10
+120922
+190922
+5617
+1
+HCM
+a 2nd house in HCM
+80
+1.2
+10
+160522
+190522
+29180
+2
+HA NOI
+a house in ha noi
+60
+6.7
+10
+170822
+170922
