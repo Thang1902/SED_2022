@@ -38,11 +38,13 @@ public:
     int generateRequestID();
     void addMember(Member mem, int ID);
     bool viewHouses(int mode);
-    void viewAllMembers();
+    bool viewAllMembers();
     bool addHouse(Member& mem_house);
+    bool unListHouse(Member& mem_house);
     void searchHouse(Member mem);
     void RequestToOccupy(Member requester);
-    void viewRequestList(Member owner);
+    bool viewRequestList(Member owner);
+    bool acceptRequest(Member owner);
     int authenticateMemberLogin();
     ~System(); // destructor 
 };
