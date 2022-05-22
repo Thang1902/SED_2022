@@ -11,7 +11,7 @@ Date::Date(int day, int month, int year){
     this->year = year;
 }
 
-Date::Date(string date_input){        
+Date::Date(string date_input){ // construct Date obj from string input        
     string sday = date_input.substr(0, 2);
     string smonth = date_input.substr(2, 2);
     string syear = date_input.substr(4, 2);
@@ -21,7 +21,7 @@ Date::Date(string date_input){
     this->year = stoi(syear);
 }
 
-void Date::updateDate(string newdate){
+void Date::updateDate(string newdate){ // update Date from string input
     string sday = newdate.substr(0, 2);
     string smonth = newdate.substr(2, 2);
     string syear = newdate.substr(4, 2);
@@ -31,7 +31,7 @@ void Date::updateDate(string newdate){
     this->year = stoi(syear);
 }
 
-string Date::getDay(){
+string Date::getDay(){  
     string sday;
     sday = to_string(this->day);
     return sday;
@@ -49,18 +49,18 @@ string Date::getYear(){
     return syear;
 }
 
-string Date::getDateAsString(){    
+string Date::getDateAsString(){   
     return DateAsString;
 }
 
-string Date::viewDate(){
+string Date::viewDate(){ // method to print out date in DDMMYYYY format
     if (year < 10){
-        return this->getDay() + "/" + this->getMonth() + "/200" + this->getYear();
+        return "\n\t\t\t\t" + this->getDay() + "/" + this->getMonth() + "/200" + this->getYear();
     }    
     return this->getDay() + "/" + this->getMonth() + "/20" + this->getYear();
 } 
 
-bool Date::operator==(Date cmp){
+bool Date::operator==(Date cmp){ 
     if (this->year == cmp.year){
         if (this->month == cmp.month){
             if (this->day == cmp.day){

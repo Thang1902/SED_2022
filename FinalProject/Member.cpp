@@ -9,6 +9,7 @@ using namespace std;
 
 Member::Member(){}
 
+//constructor for file io
 Member::Member(int member_ID, int credit, string fname, string uname, string password, string phone, double occupier_rate, int house_ID_mem){
     this->member_ID = member_ID;
     this->fname = fname;
@@ -20,15 +21,16 @@ Member::Member(int member_ID, int credit, string fname, string uname, string pas
     this->house_ID_mem = house_ID_mem;
 }
 
+// constructor when a non-member registers
 Member::Member(int id, string fname, string uname, string password, string phone){
     member_ID = id;
     this->fname = fname;
     this->phone = phone;
     this->password = password;
-    credit = 500;
+    credit = 500; // initial 500 credit points given
     this->uname = uname;
-    occupier_rate = 10;
-    house_ID_mem = 0;
+    occupier_rate = 10; // default occupier rating given (10)
+    house_ID_mem = 0; // no house yet
 }
 
 int Member::getID(){
@@ -98,25 +100,24 @@ vector <int> Member::getReqList(){
     return this->request_id_list;
 }
 
-// House Member::getHouse(House house){
-//     return house;
-// }
-
 void Member::viewInfo(){
-    cout << "ID: " << member_ID << endl;
-    cout << "Full name: " << fname << endl;
-    cout << "Phone: " << phone << endl;
-    cout << "Credit point: " << credit << endl;  
-    cout << "--------------------------\n";  
+    cout << "\n\t\t\t\tID: " << member_ID << endl;
+    cout << "\t\t\t\tFull name: " << fname << endl;
+    cout << "\t\t\t\tUsername: " << uname << endl;
+    cout << "\t\t\t\tPhone: " << phone << endl;
+    cout << "\t\t\t\tYour occupier rating: " << occupier_rate << endl;
+    cout << "\t\t\t\tID of your house: " << house_ID_mem << endl;
+    cout << "\t\t\t\tCredit point: " << credit << endl;  
+    cout << "\t\t\t\t--------------------------\n";  
 }
+
 void Member::addRequestToList(int req_id){
     request_id_list.push_back(req_id);
 }
 
-void Member::viewReqList(){
-    cout << "size of req list: " << request_id_list.size() << endl;
+void Member::viewReqList(){    
     for (int i : request_id_list){
-        cout << "Request id: " << i << endl;
+        cout << "\n\t\t\t\tRequest ID: " << i << endl;
     }
 }
 

@@ -12,6 +12,7 @@ using namespace std;
 
 Request::Request(){}
 
+// constructor for both file io and user input
 Request::Request(int request_ID, int house_ID, int owner_ID, int requester_ID, Date start, Date end){
     this->request_ID = request_ID;
     this->house_ID = house_ID;
@@ -22,10 +23,10 @@ Request::Request(int request_ID, int house_ID, int owner_ID, int requester_ID, D
 }
 
 void Request::RequestInfo(Member requester){    
-    cout << "\nRequest ID: " << request_ID << endl;
-    cout << "Requester: " << requester.getFullName() << endl;
-    cout << "Start date: " << start.viewDate() << endl;
-    cout << "End date: " << end.viewDate() << endl;
+    cout << "\n\t\t\t\tRequest ID: " << request_ID << endl;
+    cout << "\t\t\t\tRequester: " << requester.getFullName() << endl;
+    cout << "\t\t\t\tStart date: " << start.viewDate() << endl;
+    cout << "\t\t\t\tEnd date: " << end.viewDate() << endl;
 }
 
 int Request::getReqID(){
