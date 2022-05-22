@@ -1,0 +1,18 @@
+1
+1
+Saigon
+A nice villa in the center of Saigon
+100
+8.5
+9.2
+220522
+300522
+2
+2
+Hanoi
+A big house near Hoan Kiem Lake
+80
+7.2
+8.7
+160622
+210622

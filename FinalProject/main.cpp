@@ -106,8 +106,8 @@ int main(){
 
     case member:{   
         int mem;
-        enum member_mode {view_info = 1, list_house = 2, search = 3, req_to_occupy = 4, 
-                            view_req = 5, accept_req = 6, back = 7, exit = 8};  
+        enum member_mode {view_info = 1, list_house = 2, unlist_house = 3, search = 4, req_to_occupy = 5, 
+                            view_req = 6, accept_req = 7, back = 8, exit = 9};  
         cout << "\n\t\t\t\tPlease enter log in information:\n";
         int mem_id = system.authenticateMemberLogin(); // log in feature      
         if (mem_id == -1){
@@ -133,9 +133,16 @@ int main(){
                     BackorExit(runProg, runProgMember, 1, 2, 3); 
                     break;
                 }   
+
+                case unlist_house:{ // unlist their house                    
+                    system.unListHouse(system.member_list.find(mem_id)->second);                                      
+                    BackorExit(runProg, runProgMember, 1, 2, 3); 
+                    break;
+                }
                 
                 case search:{ // search for a house
                     system.searchHouse(system.member_list.find(mem_id)->second);
+                    BackorExit(runProg, runProgMember, 1, 2, 3); 
                     break;
                 }
     
@@ -152,7 +159,7 @@ int main(){
                 }
     
                 case accept_req:{ 
-                    cout << "\n\t\t\t\tThis feature is exempted, thus not implemented!\n";
+                    system.acceptRequest(system.member_list.find(mem_id)->second);
                     BackorExit(runProg, runProgMember, 1, 2, 3);
                     break;
                 }
@@ -167,11 +174,10 @@ int main(){
                     runProg = false;
                     runProgMember = false;
                     break;
-    
+                }
                 default: // wrong number input
                     cout << "\n\t\t\t\tNo such choice, choose again!";
-                    runProgMember = true;
-                }
+                    runProgMember = true;                
             }
         }
         
@@ -308,7 +314,7 @@ double inputRating(){ // validate rating input (double)
     string temp;    
 
     while (!isDouble){ 
-        cout << "\n\t\t\t\tEnter rating from -10 to 10: " ;
+        cout << "\n\t\t\t\tEnter rating from -10 to 10 (you can enter 0 if you do not wish to specify): ";
         getline(cin, temp);
         while (temp.size() == 0){
             cout << "\n\t\t\t\tInput empty, enter again: ";
@@ -409,13 +415,14 @@ void MemberScreen(Member mem){ // display screen for member
     cout << "\n\t\t\t\tWelcome back, " << mem.getFullName() << endl; 
     cout << "\t\t\t\tYou can choose to:\n";       
     cout << "\t\t\t\t1. View your information\n";
-    cout << "\t\t\t\t2. List your house available (with/without minimumm rating required)\n";    
-    cout << "\t\t\t\t3. Search for a house\n";
-    cout << "\t\t\t\t4. Request to occupy a house\n";
-    cout << "\t\t\t\t5. View all requests to your listed house\n";
-    cout << "\t\t\t\t6. Accept a request to your listed house\n";
-    cout << "\t\t\t\t7. Go back to main menu\n";
-    cout << "\t\t\t\t8. Exit the program\n";
+    cout << "\t\t\t\t2. List your house available (with/without minimumm rating required)\n";   
+    cout << "\t\t\t\t3. Unlist your house\n"; 
+    cout << "\t\t\t\t4. Search for a house\n";
+    cout << "\t\t\t\t5. Request to occupy a house\n";
+    cout << "\t\t\t\t6. View all requests to your listed house\n";
+    cout << "\t\t\t\t7. Accept a request to your listed house\n";
+    cout << "\t\t\t\t8. Go back to main menu\n";
+    cout << "\t\t\t\t9. Exit the program\n";
     cout << "\t\t\t\tWhat would you like to do?\n";    
 }
 

@@ -123,11 +123,11 @@ void House::setDescription(string description){
 }
 
 bool House::isSuitableHouse(Member mem, Date start, Date end, string city, double rate, int points){  
-    if (start > start_avai){ // if start date not later
-        if (end_avai > end){ // if end date not sooner                                           
-            if (city == location){ // same location                             
-                if (rate >= min_rate){ // suffcient rating                       
-                    if (points > (stoi(end.getDay()) - stoi(start.getDay())) * consuming_point){ // suffcient credit point                          
+    if (start > start_avai){ // if start date not later    
+        if (end_avai > end){ // if end date not sooner
+            if (city == location){ // same location                                        
+                if (rate >= min_rate){ // suffcient rating                                       
+                    if (points > (stoi(end.getDay()) - stoi(start.getDay())) * consuming_point){ // suffcient credit point 
                         return true; // the house is suitable
                     }
                 }

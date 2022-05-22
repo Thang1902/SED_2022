@@ -176,7 +176,20 @@ void System::importRequest(){ // method to import data of requests from file
         Request* requestin = new Request(in_request_ID, in_owner_ID, in_requester_ID, in_house_ID, Date(in_start), Date(in_end));  
               
         // add request to request list
-        request_list.insert({requestin->getReqID(), *requestin});      
+        request_list.insert({requestin->getReqID(), *requestin});
+
+        // add request to their corresponding owner 
+        for (mem_itr = member_list.begin(); mem_itr != member_list.end(); mem_itr++){ 
+            for (req_itr = request_list.begin(); req_itr != request_list.end(); req_itr++){
+                if (req_itr->second.getOwnerID() == mem_itr->second.getID()){
+                    for (int id : mem_itr->second.getReqList()){ // find owner of request
+                        if (id != req_itr->second.getReqID()){ // avoid duplicates
+                            mem_itr->second.addRequestToList(req_itr->second.getReqID()); // add req to member's req list
+                        }
+                    }                                   
+                }
+            }               
+        }
     }
     request_infile.close();
 }
@@ -284,7 +297,7 @@ bool System::viewHouses(int mode){ // method to view all houses
     if (house_list.size() == 0){ // no house
             cout << "\n\t\t\t\tTheres is no house in the system right now!.\n";
             return false;
-        }
+    }
     if (mode == guest){ // for guest        
         for (house_itr = house_list.begin(); house_itr != house_list.end(); house_itr++){                
             int owner = house_itr->second.getOwnerID();
@@ -301,12 +314,17 @@ bool System::viewHouses(int mode){ // method to view all houses
     }
     return true;
 } 
-void System::viewAllMembers(){ // method to view all members
+bool System::viewAllMembers(){ // method to view all members
+    if (member_list.size() == 0){
+        cout << "\n\t\t\t\tThere is no member in the record yet!\n";
+        return false;
+    }
     for (mem_itr = member_list.begin(); mem_itr != member_list.end(); mem_itr++){ 
         cout << "\n\t\t\t\t-------------------";                         
         cout << "\n\t\t\t\tMember info:\n";
         mem_itr->second.viewInfo();                
     }
+    return true;
 }   
 bool System::addHouse(Member& mem_house){ // method for a member to list a house   
     vector <int> houseid; // in-scope vector containing all houses id
@@ -324,38 +342,69 @@ bool System::addHouse(Member& mem_house){ // method for a member to list a house
     string start_str;
     string end_str;      
     
-    cout << "\n\t\t\t\tPlease enter location:\n";
+    cout << "\n\t\t\t\tPlease enter location (note that location is case sensitive, please enter the correct location format)";
+    cout << "\n\t\t\t\tCities supported by our database: Saigon, Hanoi, Da Nang\n\t\t\t\t";
     getline(cin, location_inp);
-    cout << "\n\t\t\t\tPlease enter description:\n";
+    cout << "\n\t\t\t\tPlease enter description:\n\t\t\t\t";
     getline(cin, description_inp);
-    cout << "\n\t\t\t\tPlease enter start date:\n";      
+    cout << "\n\t\t\t\tPlease enter start date (format: DDMMYY):\n\t\t\t\t";      
     getline(cin, start_str);
     getDateInput(start_str);
-    cout << "\n\t\t\t\tPlease enter end date:\n";
+    cout << "\n\t\t\t\tPlease enter end date (format: DDMMYY):\n\t\t\t\t";
     getline(cin, end_str);
     getDateInput(end_str, start_str);        
-    int cpoint_inp = inputNumber("consuming point per day");        
-    cout << "\n\t\t\t\tEnter 0 if not specified):\n";
+    int cpoint_inp = inputNumber("consuming point per day");     
     double minr_inp = inputRating(); 
     House* temp = new House(generateHouseID(), location_inp, description_inp, Date(start_str), Date(end_str), 
                                 cpoint_inp, minr_inp); // create house obj  
     int add_house_ID = temp->getID();
+    cout << "\n\t\t\t\tHouse listed successfully, here is your house's information:\n";
     temp->viewInfoHouse(mem_house); // allow user to view info of house       
     temp->setOwner(mem_house); // set id of owner for house object
     mem_house.setHouse(add_house_ID); // set house id for owner
     house_list.insert(pair<int, House>(add_house_ID, *temp)); // add house to house list
     return true;
-}   
+}
+
+bool System::unListHouse(Member& mem_house){ // method to unlist house
+    vector <int> houseid; // in-scope vector containing all houses id
+    for (house_itr = house_list.begin(); house_itr != house_list.end(); house_itr++){
+        houseid.push_back(house_itr->second.getID()); // copy all house ID
+    }
+    if (find(houseid.begin(),houseid.end(), mem_house.getHouseID()) != houseid.end()){ // check if member has a house
+        cout << "\n\t\t\t\tInformation of your listed house\n";
+        house_list[mem_house.getHouseID()].viewInfoHouse(mem_house);
+        cout << "\n\t\t\t\tAre you sure you want to unlist your house? Press 'y' to confirm or any other key to cancel\n\t\t\t\t"; // confirmation
+        string confirm;
+        getline(cin, confirm);
+        if (confirm.compare("y") != 0){
+            cout << "\n\t\t\t\tYou have chosen not to unlist your house. It's stil on the market!";
+            return false;
+        }
+        else{
+            house_list.erase(mem_house.getHouseID()); // delete house from list
+        cout << "\n\t\t\t\tYour house has been unlisted!\n";
+        return true;
+        }        
+    } 
+    else{
+        cout << "\t\t\t\tYou have not listed a house yet!";
+        return false;
+    }
+    return true;
+} 
+
 void System::searchHouse(Member mem){ // method for a member to search for a house
     string city_inp; // take in user inputs
     string start_str;
     string end_str;
-    cout << "\n\t\t\t\tPlease enter location:\n\t\t\t\t";
+    cout << "\n\t\t\t\tPlease enter location (note that location is case sensitive, you might not find a house if you dont enter the correct location format)";
+    cout << "\n\t\t\t\tCities supported by our database: Saigon, Hanoi, Da Nang\n\t\t\t\t";
     getline(cin, city_inp);        
-    cout << "\n\t\t\t\tPlease enter start date:\n\t\t\t\t";
+    cout << "\n\t\t\t\tPlease enter start date (format: DDMMYY):\n\t\t\t\t";
     getline(cin, start_str);
     getDateInput(start_str);
-    cout << "\n\t\t\t\tPlease enter end date:\n\t\t\t\t";
+    cout << "\n\t\t\t\tPlease enter end date (format: DDMMYY):\n\t\t\t\t";
     getline(cin, end_str);
     getDateInput(end_str, start_str);
     for (house_itr = house_list.begin(); house_itr != house_list.end(); house_itr++){ // traverse through house list           
@@ -369,7 +418,7 @@ void System::searchHouse(Member mem){ // method for a member to search for a hou
         house_list[id].viewInfoHouse(member_list[house_list[id].getOwnerID()]);        
     }
     if (suitable_house_ID_list.empty()){ // no suitable house found (vector empty)
-        cout << "\n\t\t\t\tNo houses available";
+        cout << "\n\t\t\t\tNo houses available\n";
     }    
 }
 
@@ -378,12 +427,13 @@ void System::RequestToOccupy(Member requester){ // method for a member to reques
     string city_inp;
     string start_str;
     string end_str;        
-    cout << "\n\t\t\t\tPlease enter location:\n\t\t\t\t";
+    cout << "\n\t\t\t\tPlease enter location (note that location is case sensitive, you might not find a house if you dont enter the correct location format)";
+    cout << "\n\t\t\t\tCities supported by our database: Saigon, Hanoi, Da Nang\n\t\t\t\t";
     getline(cin, city_inp);        
-    cout << "\n\t\t\t\tPlease enter start date:\n\t\t\t\t";
+    cout << "\n\t\t\t\tPlease enter start date (format: DDMMYY):\n\t\t\t\t";
     getline(cin, start_str);
     getDateInput(start_str);
-    cout << "\n\t\t\t\tPlease enter end date:\n\t\t\t\t";
+    cout << "\n\t\t\t\tPlease enter end date (format: DDMMYY):\n\t\t\t\t";
     getline(cin, end_str);
     getDateInput(end_str, start_str);
     Date start = Date(start_str);
@@ -426,8 +476,12 @@ void System::RequestToOccupy(Member requester){ // method for a member to reques
     req_itr->second.RequestInfo(requester); // display request info
 }
 
-void System::viewRequestList(Member owner){ // method for member to view request list
-    cout << "\n\t\t\t\tNumber of requests: " << request_list.size() << endl;
+bool System::viewRequestList(Member owner){ // method for member to view request list
+    if (owner.getReqList().size() == 0){
+        cout << "\n\t\t\t\tThere is no request to your house!\n";
+        return false;
+    }
+    cout << "\n\t\t\t\tNumber of requests: " << owner.getReqList().size() << endl;
     for (req_itr = request_list.begin(); req_itr != request_list.end(); req_itr++){ // traverse through system's request list
         if (req_itr->second.getOwnerID() == owner.getID()){ // find all requests that belong to the member
             int requester_id = req_itr->second.getRequesterID(); // find ID of the requester (the member who requested that house)
@@ -440,6 +494,30 @@ void System::viewRequestList(Member owner){ // method for member to view request
             req_itr->second.RequestInfo(requester_temp); // print request info (+name of requester)
         }
     }
+    return true;
+}
+
+bool System::acceptRequest(Member owner){    
+    if (viewRequestList(owner)){
+        int req_id = inputNumber("ID of the request you want to accpet");
+
+        while (find(owner.getReqList().begin(), owner.getReqList().end(), req_id) == owner.getReqList().end()){
+            int req_id = inputNumber("again");
+        }
+        if (request_list[req_id].getOwnerID() == owner.getID()){
+            for (req_itr = request_list.begin(); req_itr != request_list.end(); req_itr++){ // check if other requests overlap with accepted
+                if (!(request_list[req_id].getEnd() > req_itr->second.getStart() || request_list[req_id].getEnd() > req_itr->second.getStart())){
+                    request_list.erase(req_itr); // delete all overlaps
+                }
+            }
+            request_list.erase(req_id);
+        }
+    }
+    else{
+        return false;
+    }  
+    cout << "\n\t\t\t\tRequest accepted!\n";
+    return true;
 }
 
 int System::authenticateMemberLogin(){ //  method to implement log-in feature for member
